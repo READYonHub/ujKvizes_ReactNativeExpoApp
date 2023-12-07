@@ -22,3 +22,6 @@
                                            │                                                      │
                                            │                                                      │
                                            └──────────────────────────────────────────────────────┘
+
+### later you need to install to navigate pages
+* npm install @react-navigation/native @react-navigation/stack
