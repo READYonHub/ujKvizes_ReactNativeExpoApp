@@ -1,66 +1,92 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import quizData from "./data/quizData";
-import SafeAreaViewComponents from "./components/SafeAreaViewComponents";
-export default function App() {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+import React from "react";
+import { StyleSheet } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import HomeScreen from "./screens/HomeScreen";
+import QuizScreen from "./screens/QuizScreen";
 
-  const handleOptionPress = (selectedOption) => {
-    // LOG WHICH ONE YOU CLICK ON
-    console.log("Selected option:", selectedOption);
+const Stack = createStackNavigator();
 
-    //itt kell a vizsgálás, ha helyes a válasz, akkor a háttere legyen zöld az összes többnek a háterre legyen piros
-     
-  };
-
+const App = () => {
   return (
-    <View style={styles.container}>
-      {/* header */}
-      <SafeAreaViewComponents />
-      <View style={styles.content}>
-        {/* display question text  */}
-        <Text style={styles.questionTextStyle}>
-          {quizData[currentQuestion]?.question}
-        </Text>
-        {/* it goes through the quizData array (like a foreach loop) with the help of .map() */}
-        {quizData[currentQuestion]?.options.map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.optionButton}
-            onPress={() => handleOptionPress(item)}
-          >
-          {/* display the option text */}
-            <Text style={styles.optionStyle}>{item}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="HomeScreen">
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={styles.HomeScreenStyle}
+        />
+        <Stack.Screen
+          name="QuizScreen"
+          component={QuizScreen}
+          options={{
+            // Itt állítsd be a headerLeft opciót
+            headerLeft: () => null, // Üres nézetet ad hozzá a bal oldalra
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
+
+export default App;
 
 const styles = StyleSheet.create({
-  //BackgroundColor
   container: {
     flex: 1,
-    backgroundColor: "#191970",
+    backgroundColor: "#fff",
   },
   content: {
-    backgroundColor: "#DDDDDD",
-    padding: 10,
-    margin: 10,
-    borderRadius: 5,
+    padding: 20,
     alignItems: "center",
   },
-  optionButton: {
-    marginVertical: "3%",
-    padding: "10%",
-    paddingHorizontal:"45%",
-    backgroundColor: "#6a5acd",
-    borderRadius: 100,
+  questionTextStyle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 20,
   },
-   optionStyle:{
-    color:'#fffafa',
-    fontWeight:'bold',
-    
-   }
+  optionButton: {
+    marginVertical: 10,
+    padding: 15,
+    backgroundColor: "#DDDDDD",
+    borderRadius: 10,
+  },
+  optionStyle: {
+    fontSize: 16,
+  },
+  correctOption: {
+    backgroundColor: "green",
+  },
+  incorrectOption: {
+    backgroundColor: "red",
+  },
+  resultContainer: {
+    marginTop: 20,
+  },
+  resultText: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  finishButton: {
+    backgroundColor: "blue",
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 20,
+  },
+  finishButtonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  HomeScreenStyle: {
+    title: "Welcome in Kvizes",
+    headerStyle: {
+      backgroundColor: "#8a2be2",
+    },
+    headerTitleStyle: {
+      color: "white",
+      fontSize: 20,
+    },
+    headerTitleAlign: "center",
+  },
 });
